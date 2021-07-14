@@ -36,15 +36,15 @@ where file is the `.vm` file to be translated. Output is to `stdout`
 | `not`   | `Not y`                                    | Bit-wise                             |
 
 ## Memory Access Commands
-| Segment   | Purpose                                                                                                              | Comments                                                                                            |
-|-----------|----------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
-| argument  | Stores the function’s arguments.                                                                                     | Allocated dynamically by the VM implementation when the function is entered.                        |
-| local     | Stores the function’s local variables.                                                                               | Allocated dynamically by the VM implementation and initialized to 0’s when the function is entered. |
-| static    | Stores static variables shared by all functions in the same .vm file.                                                | Allocated by the VM imp. for each .vm file; shared by all functions in the .vm file.                |
-| constant  | Pseudo-segment that holds all the constants in the range 0 . . . 32767.                                              | Emulated by the VM implementation; Seen by all the functions in the program.                        |
-| this that | General-purpose segments. Can be made to correspond to different areas in the heap. Serve various programming needs. | Any VM function can use these segments to manipulate selected areas on the heap.                    |
-| pointer   | A two-entry segment that holds the base addresses of the this and that segments.                                     | Aligning the this (or that) segment to the heap area beginning in that address.                     |
-| temp      | Fixed eight-entry segment that holds temporary variables for general use.                                            | May be used by any VM function for any purpose. Shared by all functions in the program.             |
+| Segment       | Purpose                                                                                                              | Comments                                                                                            |
+|---------------|----------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
+| `argument`    | Stores the function’s arguments.                                                                                     | Allocated dynamically by the VM implementation when the function is entered.                        |
+| `local`       | Stores the function’s local variables.                                                                               | Allocated dynamically by the VM implementation and initialized to 0’s when the function is entered. |
+| `static`      | Stores static variables shared by all functions in the same .vm file.                                                | Allocated by the VM imp. for each .vm file; shared by all functions in the .vm file.                |
+| `constant`    | Pseudo-segment that holds all the constants in the range 0 . . . 32767.                                              | Emulated by the VM implementation; Seen by all the functions in the program.                        |
+| `this` `that` | General-purpose segments. Can be made to correspond to different areas in the heap. Serve various programming needs. | Any VM function can use these segments to manipulate selected areas on the heap.                    |
+| `pointer`     | A two-entry segment that holds the base addresses of the this and that segments.                                     | Aligning the this (or that) segment to the heap area beginning in that address.                     |
+| `temp`        | Fixed eight-entry segment that holds temporary variables for general use.                                            | May be used by any VM function for any purpose. Shared by all functions in the program.             |
 
 ## Program Flow Commands
 ```java
@@ -62,3 +62,31 @@ call functionName nArgs	        // Function invocation, specifying the
 return                          // Transfer control back to the calling function
 ```
 
+# Implementation
+## Arithmetic And Logical Commands
+__TODO__
+
+## Memory Access Commands
+### Pop (from stack) commands
+| Mem Segment | Abbrv |
+|-------------|-------|
+| Local       | LCL   |
+| Argument    | ARG   |
+| This        | THIS  |
+| That        | THAT  |
+
+```haskell
+pop argument 9
+// pop [segment] [address]
+```
+
+```asm
+@`segment`
+D=M
+@`address`
+D=D+A
+@SP
+M=M-1
+A=M
+M=D
+```
