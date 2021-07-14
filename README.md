@@ -48,17 +48,17 @@ where file is the `.vm` file to be translated. Output is to `stdout`
 
 ## Program Flow Commands
 ```java
-label	symbol	// Label declaration
-goto	symbol		// Unconditional branching
-if-goto symbol	// Conditional branching
+label	symbol      // Label declaration
+goto	symbol      // Unconditional branching
+if-goto symbol      // Conditional branching
 ```
 
 ## Function Calling Commands
 ```java
-function functionName nLocals	// Function declaration, specifying the
-								// number of the function’s local variables
-call functionName nArgs			// Function invocation, specifying the
-								// number of the function’s arguments
-return							// Transfer control back to the calling function
+function functionName nLocals   // Function declaration, specifying the
+                                // number of the function’s local variables
+call functionName nArgs	        // Function invocation, specifying the
+                                // number of the function’s arguments
+return                          // Transfer control back to the calling function
 ```
 
