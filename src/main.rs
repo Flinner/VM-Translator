@@ -19,7 +19,9 @@ fn main() {
             Ok(None) => continue,
             Err(e) => panic!("{}", e),
         };
+        println!("// {}", line);
+
         let hack = write_hack::convert(parsed);
-        println!("{}", hack)
+        println!("{}", hack);
     }
 }
