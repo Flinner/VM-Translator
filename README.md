@@ -37,6 +37,7 @@ where file is the `.vm` file to be translated. Output is to `stdout`
 
 ## Memory Access Commands
 | Segment   | Purpose                                                                                                              | Comments                                                                                            |
+|-----------|----------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
 | argument  | Stores the function’s arguments.                                                                                     | Allocated dynamically by the VM implementation when the function is entered.                        |
 | local     | Stores the function’s local variables.                                                                               | Allocated dynamically by the VM implementation and initialized to 0’s when the function is entered. |
 | static    | Stores static variables shared by all functions in the same .vm file.                                                | Allocated by the VM imp. for each .vm file; shared by all functions in the .vm file.                |
