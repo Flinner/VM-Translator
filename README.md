@@ -45,6 +45,20 @@ where file is the `.vm` file to be translated. Output is to `stdout`
 | this that | General-purpose segments. Can be made to correspond to different areas in the heap. Serve various programming needs. | Any VM function can use these segments to manipulate selected areas on the heap.                    |
 | pointer   | A two-entry segment that holds the base addresses of the this and that segments.                                     | Aligning the this (or that) segment to the heap area beginning in that address.                     |
 | temp      | Fixed eight-entry segment that holds temporary variables for general use.                                            | May be used by any VM function for any purpose. Shared by all functions in the program.             |
-|           |                                                                                                                      |                                                                                                     |
 
-# Implementation
+## Program Flow Commands
+```java
+label	symbol	// Label declaration
+goto	symbol		// Unconditional branching
+if-goto symbol	// Conditional branching
+```
+
+## Function Calling Commands
+```java
+function functionName nLocals	// Function declaration, specifying the
+								// number of the function’s local variables
+call functionName nArgs			// Function invocation, specifying the
+								// number of the function’s arguments
+return							// Transfer control back to the calling function
+```
+
