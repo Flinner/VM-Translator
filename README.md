@@ -19,6 +19,9 @@ where file is the `.vm` file to be translated. Output is to `stdout`
 
 
 # Specification
+## Diagram
+![image](https://user-images.githubusercontent.com/85732279/125663277-4a742557-8ba8-441d-957b-fc8b4e3a26fc.png)
+
 ## Arithmetic and Logical Commands
 | Command | Return value (after popping the operand/s) | Comment                              |
 |---------|--------------------------------------------|--------------------------------------|
