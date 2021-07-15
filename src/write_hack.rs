@@ -30,7 +30,7 @@ fn convert_command(
         Action::Pop => match segment {
             Argument => pop("ARG", address),
             Local => pop("LCL", address),
-            Static => format!("@file.{}\nD=M\n{}", address, POP_TO_D),
+            Static => format!("@file.{}\nD=A\n{}", address, POP_TO_D),
             Constant => panic!("Cannot Pop constant!"),
             This => pop("THIS", address),
             That => pop("THAT", address),
