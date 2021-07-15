@@ -1,3 +1,4 @@
+mod hack_binary;
 mod parse;
 mod types;
 mod write_hack;

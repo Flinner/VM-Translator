@@ -1,3 +1,4 @@
+use crate::hack_binary::*;
 use crate::types::{Action, Arithmetic, Command, ParsedLine, Segment};
 
 pub fn convert(parsed: ParsedLine) -> String {
@@ -17,48 +18,41 @@ fn convert_command(
     use Segment::*;
     match action {
         Action::Push => match segment {
-            Argument => 1,
-            Local => 1,
-            Static => 1,
-            Constant => return format!("@{}\nD=A\n@SP\nA=D", address),
-            This => 1,
-            That => 1,
-            Pointer => 1,
-            Temp => 1,
+            Argument => push("ARG", address),
+            Local => push("LCL", address),
+            Static => format!("@file.{}\nD=M\n{}", address, PUSH_FROM_D),
+            Constant => format!("@{}\nD=A\n{}", address, PUSH_FROM_D),
+            This => push("THIS", address),
+            That => push("THAT", address),
+            Pointer => push_offset(3, address),
+            Temp => push_offset(5, address),
         },
         Action::Pop => match segment {
-            Argument => return pop("ARG", address),
-            Local => return pop("LCL", address),
-            Static => 1,
-            Constant => return "Cannot Pop constant!".to_string(),
-            This => return pop("THIS", address),
-            That => return pop("THAT", address),
-            Pointer => 1,
-            Temp => 1,
+            Argument => pop("ARG", address),
+            Local => pop("LCL", address),
+            Static => format!("@file.{}\nD=M\n{}", address, POP_TO_D),
+            Constant => panic!("Cannot Pop constant!"),
+            This => pop("THIS", address),
+            That => pop("THAT", address),
+            Pointer => pop_offset(3, address),
+            Temp => pop_offset(5, address),
         },
-    };
-    todo!()
+    }
 }
 
 fn convert_arithmetic(arithmetic: Arithmetic) -> String {
-    println!("{:?}", arithmetic);
-    todo!()
-}
+    use Arithmetic::*;
+    match arithmetic {
+        Add => return format!("{}\n{}", ADD, PUSH_FROM_D),
+        Sub => return format!("{}\n{}", SUB, PUSH_FROM_D),
+        Neg => 1,
+        Eq => 1,
+        Gt => 1,
+        Lt => 1,
+        And => 1,
+        Or => 1,
+        Not => 1,
+    };
 
-/**
-Performs a pop operation
-assembly code generated is:
-```asm
-@`seg`
-D=M
-@`address`
-D=D+A
-@SP
-M=M-1
-A=M
-M=D
-```
-*/
-fn pop(seg: &str, address: u16) -> String {
-    format!("@{}\nD=M\n@{}\nD=D+A\n@SP\nM=M-1\nA=M\nM=D", seg, address)
+    todo!()
 }
