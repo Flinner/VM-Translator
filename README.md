@@ -4,6 +4,9 @@ This is part of [nand2tetris](https://nand2tetris.org), extending my
 other project ([Flinner/HackAssembler: An Assembler written in
 V](https://github.com/Flinner/HackAssembler)).
 
+![2021-06-26_12-43_1](https://user-images.githubusercontent.com/85732279/125824505-06cc262c-81f7-4ae6-b303-a7d9f93fc851.png)
+
+
 # Objective
 Build a  VM translator, conforming to the VM Specification, and to
 the Standard VM-on-Hack Mapping, [Project 07 |
