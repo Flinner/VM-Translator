@@ -115,5 +115,66 @@ A=M
 D=M-D";
 
 pub const NEG: &str = "\
+@SP
+M=M-1
+A=M
+D=-M";
 
-";
+pub fn compare(i: usize, jump: &str) -> String {
+    format!(
+        "\
+@SP
+M=M-1
+A=M
+D=M//a
+
+@SP 
+M=M-1
+A=M //b
+D=M-D // b - a
+
+@{jump}.{i}
+D;{jump}
+D=0 //false
+
+@END_{jump}.{i}
+0;JMP
+
+({jump}.{i})
+D=-1  //true
+    
+(END_{jump}.{i})
+{}",
+        PUSH_FROM_D,
+        i = i,
+        jump = jump
+    )
+}
+
+pub const AND: &str = "\
+@SP
+M=M-1
+A=M
+D=M
+
+@SP
+M=M-1
+A=M
+D=D&M";
+
+pub const OR: &str = "\
+@SP
+M=M-1
+A=M
+D=M
+
+@SP
+M=M-1
+A=M
+D=D|M";
+
+pub const NOT: &str = "\
+@SP
+M=M-1
+A=M
+D=!M";

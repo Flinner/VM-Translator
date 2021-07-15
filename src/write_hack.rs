@@ -1,9 +1,9 @@
 use crate::hack_binary::*;
 use crate::types::{Action, Arithmetic, Command, ParsedLine, Segment};
 
-pub fn convert(parsed: ParsedLine) -> String {
+pub fn convert(parsed: ParsedLine, i: usize) -> String {
     match parsed {
-        ParsedLine::Arithmetic(arithmetic) => convert_arithmetic(arithmetic),
+        ParsedLine::Arithmetic(arithmetic) => convert_arithmetic(arithmetic, i),
         ParsedLine::Command(command) => convert_command(command),
     }
 }
@@ -40,19 +40,17 @@ fn convert_command(
     }
 }
 
-fn convert_arithmetic(arithmetic: Arithmetic) -> String {
+fn convert_arithmetic(arithmetic: Arithmetic, i: usize) -> String {
     use Arithmetic::*;
     match arithmetic {
         Add => return format!("{}\n{}", ADD, PUSH_FROM_D),
         Sub => return format!("{}\n{}", SUB, PUSH_FROM_D),
-        Neg => 1,
-        Eq => 1,
-        Gt => 1,
-        Lt => 1,
-        And => 1,
-        Or => 1,
-        Not => 1,
+        Neg => return format!("{}\n{}", NEG, PUSH_FROM_D),
+        Eq => return compare(i, "JEQ"),
+        Gt => return compare(i, "JGT"),
+        Lt => return compare(i, "JLT"),
+        And => return format!("{}\n{}", AND, PUSH_FROM_D),
+        Or => return format!("{}\n{}", OR, PUSH_FROM_D),
+        Not => return format!("{}\n{}", NOT, PUSH_FROM_D),
     };
-
-    todo!()
 }

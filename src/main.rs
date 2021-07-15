@@ -13,7 +13,7 @@ fn main() {
 
     let lines = fs::read_to_string(&args[1]).expect("Cann't read file!");
 
-    for line in lines.lines() {
+    for (i, line) in lines.lines().enumerate() {
         let parsed = parse::parse_line(line);
         let parsed = match parsed {
             Ok(Some(parsed)) => parsed,
@@ -22,7 +22,7 @@ fn main() {
         };
         println!("// {}", line);
 
-        let hack = write_hack::convert(parsed);
+        let hack = write_hack::convert(parsed, i);
         println!("{}", hack);
     }
 }
