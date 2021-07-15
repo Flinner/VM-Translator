@@ -62,31 +62,3 @@ call functionName nArgs	        // Function invocation, specifying the
 return                          // Transfer control back to the calling function
 ```
 
-# Implementation
-## Arithmetic And Logical Commands
-__TODO__
-
-## Memory Access Commands
-### Pop (from stack) commands
-| Mem Segment | Abbrv |
-|-------------|-------|
-| Local       | LCL   |
-| Argument    | ARG   |
-| This        | THIS  |
-| That        | THAT  |
-
-```haskell
-pop argument 9
-// pop [segment] [address]
-```
-
-```asm
-@`segment`
-D=M
-@`address`
-D=D+A
-@SP
-M=M-1
-A=M
-M=D
-```
