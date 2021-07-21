@@ -10,7 +10,7 @@ pub fn parse_line(line: &str) -> Result<Option<ParsedLine>, ParseError> {
     let sp: Vec<&str> = line.split(' ').collect();
     let parsed: ParsedLine = match sp.len() {
         1 => ParsedLine::Arithmetic(get_arithmatic(sp[0])?),
-        2 => return Err(ParseError("NOT IMPLEMENTED!".to_string())),
+        2 => ParsedLine::FlowControl(get_flow_control(sp[0], sp[1])?),
         3 => ParsedLine::Command(get_command(sp[0], sp[1], sp[2])?),
         _ => return Err(ParseError("MORE THAN 3 COMMANds!".to_string())),
     };
@@ -64,4 +64,15 @@ fn get_command<'a>(
         address,
         segment,
     })
+}
+
+fn get_flow_control<'a>(flow_type: &str, label: &'a str) -> Result<FlowControl<'a>, ParseError> {
+    use FlowType::*;
+    let flow_type = match flow_type {
+        "label" => Label,
+        "if-goto" => IfGoto,
+        "goto" => Goto,
+        f => return Err(ParseError(format!("unknown command: {}", f))),
+    };
+    Ok(FlowControl { flow_type, label })
 }

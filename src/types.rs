@@ -42,11 +42,33 @@ pub enum Action {
     Pop,
 }
 
+/// represents a flow command
+/// example: `label YO_LABEL`
+/// example: `if-goto YO_LABEL`
+/// example: `goto YO_LABEL`
+#[derive(Debug)]
+pub struct FlowControl<'a> {
+    pub flow_type: FlowType,
+    pub label: &'a str,
+}
+
+#[derive(Debug)]
+pub enum FlowType {
+    Label,
+    Goto,
+    IfGoto,
+}
+
 /// parsed line
 #[derive(Debug)]
-pub enum ParsedLine {
+pub enum ParsedLine<'a> {
+    /// example: pop local 3
     Command(Command),
+    /// example: add
     Arithmetic(Arithmetic),
+    /// example: label YO_LABEL
+    /// example: if-goto YO_LABEL
+    FlowControl(FlowControl<'a>),
 }
 
 #[derive(Debug)]

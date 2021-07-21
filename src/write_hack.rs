@@ -5,6 +5,7 @@ pub fn convert(parsed: ParsedLine, i: usize) -> String {
     match parsed {
         ParsedLine::Arithmetic(arithmetic) => convert_arithmetic(arithmetic, i),
         ParsedLine::Command(command) => convert_command(command),
+        ParsedLine::FlowControl(flow) => todo!("TODO: {:#?}", flow),
     }
 }
 
