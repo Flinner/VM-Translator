@@ -1,11 +1,11 @@
 use crate::hack_binary::*;
-use crate::types::{Action, Arithmetic, Command, ParsedLine, Segment};
+use crate::types::{Action, Arithmetic, Command, FlowControl, FlowType, ParsedLine, Segment};
 
 pub fn convert(parsed: ParsedLine, i: usize) -> String {
     match parsed {
         ParsedLine::Arithmetic(arithmetic) => convert_arithmetic(arithmetic, i),
         ParsedLine::Command(command) => convert_command(command),
-        ParsedLine::FlowControl(flow) => todo!("TODO: {:#?}", flow),
+        ParsedLine::FlowControl(flow) => convert_flow_control(flow),
     }
 }
 
@@ -54,4 +54,13 @@ fn convert_arithmetic(arithmetic: Arithmetic, i: usize) -> String {
         Or => return format!("{}\n{}", OR, PUSH_FROM_D),
         Not => return format!("{}\n{}", NOT, PUSH_FROM_D),
     };
+}
+
+fn convert_flow_control(FlowControl { flow_type, label }: FlowControl) -> String {
+    use FlowType::*;
+    match flow_type {
+        Label => return format!("({})", label),
+        Goto => return format!("@{}\n0;JMP", label),
+        IfGoto => return format!("{}\n@{}\nD;JNE", IF_GOTO, label),
+    }
 }

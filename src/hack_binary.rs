@@ -178,3 +178,19 @@ pub const NOT: &str = "\
 M=M-1
 A=M
 D=!M";
+
+/// *SP-- should be set to -1 to be true,
+/// also `D` is used for the jump
+/// Do after this!
+///```
+/// @{label}
+/// D;JEQ";
+///```
+pub const IF_GOTO: &str = "\
+@SP
+M=M-1 // SP--
+A=M
+D=M   // D = *SP
+@1
+D=D+A // D = D + 1";
+// with format:
