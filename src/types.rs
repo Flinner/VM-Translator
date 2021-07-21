@@ -1,5 +1,13 @@
 use std::{error::Error, num};
 
+/// represents a command such as `pop local 2`
+#[derive(Debug)]
+pub struct Command {
+    pub action: Action,
+    pub segment: Segment,
+    pub address: u16,
+}
+
 /// An arithmetic or logical operation
 #[derive(Debug)]
 pub enum Arithmetic {
@@ -32,14 +40,6 @@ pub enum Segment {
 pub enum Action {
     Push,
     Pop,
-}
-
-/// represents a command such as `pop local 2`
-#[derive(Debug)]
-pub struct Command {
-    pub action: Action,
-    pub segment: Segment,
-    pub address: u16,
 }
 
 /// parsed line
