@@ -1,14 +1,16 @@
 use crate::hack_binary::*;
-use crate::types::{Action, Arithmetic, Command, FlowControl, FlowType, ParsedLine, Segment};
+use crate::types::{
+    Action, Arithmetic, Command, FlowControl, FlowType, Function, FunctionCall, ParsedLine, Segment,
+};
 
 pub fn convert(parsed: ParsedLine, i: usize) -> String {
     match parsed {
         ParsedLine::Arithmetic(arithmetic) => convert_arithmetic(arithmetic, i),
         ParsedLine::Command(command) => convert_command(command),
         ParsedLine::FlowControl(flow) => convert_flow_control(flow),
-        ParsedLine::Return => todo!(),
-        ParsedLine::Function(func) => todo!(),
-        ParsedLine::FunctionCall(call) => todo!(),
+        ParsedLine::Return => convert_return(),
+        ParsedLine::Function(func) => convert_function(func),
+        ParsedLine::FunctionCall(call) => convert_call(call),
     }
 }
 
@@ -66,4 +68,51 @@ fn convert_flow_control(FlowControl { flow_type, label }: FlowControl) -> String
         Goto => return format!("@{}\n0;JMP", label),
         IfGoto => return format!("{}\n@{}\nD;JNE", IF_GOTO, label),
     }
+}
+
+fn convert_function(Function { name, local_vars }: Function) -> String {
+    // init all local vars with 0
+    format!("({})\n@0\nD=A\n{}", name, PUSH_FROM_D.repeat(local_vars))
+}
+
+fn convert_call(FunctionCall { name, args }: FunctionCall) -> String {
+    todo!()
+}
+
+fn convert_return() -> String {
+    format!(
+        "
+@LCL // TMP=LCL
+D=M
+@R15
+M=D
+
+{POP_TO_D}
+@ARG
+A=M
+M=D // saving return value, *ARG=pop()
+
+@ARG
+D=M
+@SP
+M=D+1 // SP = ARG + 1
+
+//restore THAT,THIS,ARG,LCL
+{restore_that}
+{restore_this}
+{restore_arg}
+{restore_lcl}
+{restore_address}
+//
+@R14 // RET
+A=M
+0;JMP
+",
+        POP_TO_D = POP_TO_D,
+        restore_this = restore_seg("THIS"),
+        restore_that = restore_seg("THAT"),
+        restore_arg = restore_seg("ARG"),
+        restore_lcl = restore_seg("LCL"),
+        restore_address = restore_seg("R14"), // RET address
+    )
 }

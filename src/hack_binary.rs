@@ -82,12 +82,13 @@ D=M
 
 /// pushs from value in D
 /// D is a value
-pub const PUSH_FROM_D: &str = "\
+pub const PUSH_FROM_D: &str = "//PUSH_FROM_D
 @SP
 A=M
 M=D
 @SP
-M=M+1";
+M=M+1
+";
 
 //====================================================================================//
 //                            ARITHMETIC                                              //
@@ -194,3 +195,19 @@ D=M   // D = *SP
 @1
 D=D+A // D = D + 1";
 // with format:
+
+/// tmp--
+/// @`seg`=tmp
+pub fn restore_seg(seg: &str) -> String {
+    format!(
+        "
+@R15 // frame tmp
+M=M-1
+A=M
+D=M
+@{}
+M=D
+",
+        seg
+    )
+}
