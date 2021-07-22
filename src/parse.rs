@@ -10,14 +10,15 @@ pub fn parse_line(line: &str) -> Result<Option<ParsedLine>, ParseError> {
     let sp: Vec<&str> = line.split(' ').collect();
     let parsed: ParsedLine = match sp.len() {
         1 => {
+            //could be a `return`
             if sp[0] == "return" {
-                //could be a `return`
                 ParsedLine::Return
-            } else {
                 //or `add`, `sub`....
+            } else {
                 ParsedLine::Arithmetic(get_arithmatic(sp[0])?)
             }
         }
+        // labels, gotos, if-goto
         2 => ParsedLine::FlowControl(get_flow_control(sp[0], sp[1])?),
         3 => {
             // could be  function declartion (`function f n`)
