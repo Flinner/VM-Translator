@@ -72,7 +72,15 @@ fn convert_flow_control(FlowControl { flow_type, label }: FlowControl) -> String
 
 fn convert_function(Function { name, local_vars }: Function) -> String {
     // init all local vars with 0
-    format!("({})\n@0\nD=A\n{}", name, PUSH_FROM_D.repeat(local_vars))
+    format!(
+        "
+({})
+@0
+D=A
+{}",
+        name,
+        PUSH_FROM_D.repeat(local_vars)
+    )
 }
 
 fn convert_call(FunctionCall { name, args }: FunctionCall) -> String {
