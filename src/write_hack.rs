@@ -6,6 +6,9 @@ pub fn convert(parsed: ParsedLine, i: usize) -> String {
         ParsedLine::Arithmetic(arithmetic) => convert_arithmetic(arithmetic, i),
         ParsedLine::Command(command) => convert_command(command),
         ParsedLine::FlowControl(flow) => convert_flow_control(flow),
+        ParsedLine::Return => todo!(),
+        ParsedLine::Function(func) => todo!(),
+        ParsedLine::FunctionCall(call) => todo!(),
     }
 }
 

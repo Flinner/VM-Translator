@@ -59,6 +59,22 @@ pub enum FlowType {
     IfGoto,
 }
 
+/// Function
+/// example: function mult 0
+#[derive(Debug)]
+pub struct Function<'a> {
+    pub name: &'a str,
+    pub local_vars: u16,
+}
+
+/// Function Call,
+/// example: call mult 0
+#[derive(Debug)]
+pub struct FunctionCall<'a> {
+    pub name: &'a str,
+    pub args: u16,
+}
+
 /// parsed line
 #[derive(Debug)]
 pub enum ParsedLine<'a> {
@@ -69,6 +85,14 @@ pub enum ParsedLine<'a> {
     /// example: label YO_LABEL
     /// example: if-goto YO_LABEL
     FlowControl(FlowControl<'a>),
+    /// a return statment
+    Return,
+    /// Function
+    /// example: function mult 0
+    Function(Function<'a>),
+    /// Function Call
+    /// example: call mult 0
+    FunctionCall(FunctionCall<'a>),
 }
 
 #[derive(Debug)]

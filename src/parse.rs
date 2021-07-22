@@ -9,13 +9,48 @@ pub fn parse_line(line: &str) -> Result<Option<ParsedLine>, ParseError> {
 
     let sp: Vec<&str> = line.split(' ').collect();
     let parsed: ParsedLine = match sp.len() {
-        1 => ParsedLine::Arithmetic(get_arithmatic(sp[0])?),
+        1 => {
+            if sp[0] == "return" {
+                //could be a `return`
+                ParsedLine::Return
+            } else {
+                //or `add`, `sub`....
+                ParsedLine::Arithmetic(get_arithmatic(sp[0])?)
+            }
+        }
         2 => ParsedLine::FlowControl(get_flow_control(sp[0], sp[1])?),
-        3 => ParsedLine::Command(get_command(sp[0], sp[1], sp[2])?),
+        3 => {
+            // could be  function declartion (`function f n`)
+            if sp[0] == "function" {
+                ParsedLine::Function(get_fn(sp[1], sp[2])?)
+            // or a function call, (`call f n`)
+            } else if sp[0] == "return" {
+                ParsedLine::FunctionCall(get_fn_call(sp[1], sp[2])?)
+                // or a cmd (`push local 4`)
+            } else {
+                ParsedLine::Command(get_command(sp[0], sp[1], sp[2])?)
+            }
+        }
         _ => return Err(ParseError("MORE THAN 3 COMMANds!".to_string())),
     };
 
     Ok(Some(parsed))
+}
+
+/// ```
+/// function func n // function named func. and n local vars
+/// ```
+fn get_fn<'a>(name: &'a str, local_vars: &'a str) -> Result<Function<'a>, ParseError> {
+    let local_vars: u16 = local_vars.parse()?;
+    Ok(Function { name, local_vars })
+}
+
+/// ```
+/// call func n // call function named func. and n args pushed to stack
+/// ```
+fn get_fn_call<'a>(name: &'a str, args: &'a str) -> Result<FunctionCall<'a>, ParseError> {
+    let args: u16 = args.parse()?;
+    Ok(FunctionCall { name, args })
 }
 
 fn get_arithmatic(s: &str) -> Result<Arithmetic, ParseError> {
