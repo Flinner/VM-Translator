@@ -64,7 +64,7 @@ pub enum FlowType {
 #[derive(Debug)]
 pub struct Function<'a> {
     pub name: &'a str,
-    pub local_vars: u16,
+    pub local_vars: usize,
 }
 
 /// Function Call,
@@ -72,7 +72,7 @@ pub struct Function<'a> {
 #[derive(Debug)]
 pub struct FunctionCall<'a> {
     pub name: &'a str,
-    pub args: u16,
+    pub args: usize,
 }
 
 /// parsed line

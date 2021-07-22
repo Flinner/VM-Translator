@@ -42,7 +42,7 @@ pub fn parse_line(line: &str) -> Result<Option<ParsedLine>, ParseError> {
 /// function func n // function named func. and n local vars
 /// ```
 fn get_fn<'a>(name: &'a str, local_vars: &'a str) -> Result<Function<'a>, ParseError> {
-    let local_vars: u16 = local_vars.parse()?;
+    let local_vars: usize = local_vars.parse()?;
     Ok(Function { name, local_vars })
 }
 
@@ -50,7 +50,7 @@ fn get_fn<'a>(name: &'a str, local_vars: &'a str) -> Result<Function<'a>, ParseE
 /// call func n // call function named func. and n args pushed to stack
 /// ```
 fn get_fn_call<'a>(name: &'a str, args: &'a str) -> Result<FunctionCall<'a>, ParseError> {
-    let args: u16 = args.parse()?;
+    let args: usize = args.parse()?;
     Ok(FunctionCall { name, args })
 }
 
