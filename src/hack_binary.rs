@@ -1,3 +1,28 @@
+use crate::{
+    types::{FunctionCall, ParsedLine},
+    write_hack::convert,
+};
+
+/// SP=256
+/// call Sys.init
+pub fn bootstrap() -> String {
+    format!(
+        "
+@256
+D=A
+@SP
+M=D
+{}",
+        convert(
+            ParsedLine::FunctionCall(FunctionCall {
+                name: "Sys.init",
+                args: 0
+            }),
+            0,
+        )
+    )
+}
+
 /**
 Performs a pop operation on `Argument`, `Local`, `This` and `That`
 */
@@ -209,5 +234,18 @@ D=M
 M=D
 ",
         seg
+    )
+}
+/// D=`seg`
+/// PUSH_FROM_D
+pub fn save_seg(seg: &str) -> String {
+    format!(
+        " // save seg
+@{seg}
+D=M
+{PUSH_FROM_D}
+",
+        seg = seg,
+        PUSH_FROM_D = PUSH_FROM_D,
     )
 }

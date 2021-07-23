@@ -25,7 +25,7 @@ pub fn parse_line(line: &str) -> Result<Option<ParsedLine>, ParseError> {
             if sp[0] == "function" {
                 ParsedLine::Function(get_fn(sp[1], sp[2])?)
             // or a function call, (`call f n`)
-            } else if sp[0] == "return" {
+            } else if sp[0] == "call" {
                 ParsedLine::FunctionCall(get_fn_call(sp[1], sp[2])?)
                 // or a cmd (`push local 4`)
             } else {

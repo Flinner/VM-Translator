@@ -84,7 +84,41 @@ D=A
 }
 
 fn convert_call(FunctionCall { name, args }: FunctionCall) -> String {
-    todo!()
+    format!(
+        "
+{save_ret_address}
+{save_lcl}
+{save_arg}
+{save_this}
+{save_that}
+
+@SP // ARG=SP-args-5
+D=M
+@5
+D=D-A
+@{args}
+D=D-A
+@ARG
+M=D
+
+@SP  // LCL=SP
+D=M
+@LCL
+M=D
+
+
+@{name}
+0;JMP
+(return-{name})
+",
+        save_ret_address = save_seg(&("return-".to_string() + name)), // RET address
+        save_lcl = save_seg("LCL"),
+        save_arg = save_seg("ARG"),
+        save_this = save_seg("THIS"),
+        save_that = save_seg("THAT"),
+        args = args,
+        name = name,
+    )
 }
 
 fn convert_return() -> String {
