@@ -12,7 +12,20 @@ pub fn bootstrap() -> String {
 D=A
 @SP
 M=D
-{}",
+
+@0
+D=A-1
+@LCL
+M=D
+@ARG
+M=D
+@THIS
+M=D
+@THAT
+M=D
+
+{}
+",
         convert(
             ParsedLine::FunctionCall(FunctionCall {
                 name: "Sys.init",
